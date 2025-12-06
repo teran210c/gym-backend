@@ -19,10 +19,31 @@ public class WorkoutService {
     }
 
     public Workout createWorkout(Workout workout) {
+        // Verifica que la semana exista
+        if (workout.getWeek() == null || workout.getWeek().getId() == null) {
+            throw new RuntimeException("Workout must belong to a week");
+        }
+
+        Long weekId = workout.getWeek().getId();
+
+        // Cuenta workouts actuales en esa semana
+        int count = workoutRepository.countByWeekId(weekId);
+
+        if (count >= 7) {
+            throw new RuntimeException("Week already has 7 workouts");
+        }
+
+        // Asigna título automático
+        workout.setTitleNumber(count + 1);
+
+        // Fecha
         workout.setCreatedAt(LocalDateTime.now());
+
+        // Añade ejercicio vacío
         if (workout.getExercises() == null) {
             workout.setExercises(new ArrayList<>());
         }
+
         Exercise emptyExercise = new Exercise();
         emptyExercise.setWorkout(workout);
 
