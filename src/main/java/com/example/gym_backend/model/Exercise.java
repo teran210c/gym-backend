@@ -25,4 +25,9 @@ public class Exercise {
     @JoinColumn(name = "workout_id")
     @JsonBackReference
     private Workout workout;
+
+    @ManyToOne
+    @JoinColumn(name = "template_id")
+    private ExerciseTemplate template;
+
 }

@@ -24,7 +24,11 @@ public class Workout {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    @ManyToOne
+    @JoinColumn(name = "week_id")
+    private Week week;
+
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
-    private List<Exercise> exercises = new ArrayList<>();
+    private List<Exercise> exercises;
 }
