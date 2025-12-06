@@ -2,27 +2,27 @@ package com.example.gym_backend.controller;
 
 import com.example.gym_backend.model.Week;
 import com.example.gym_backend.service.WeekService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/weeks")
+@RequestMapping("/weeks")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequiredArgsConstructor
 public class WeekController {
+
     private final WeekService weekService;
 
-    public WeekController(WeekService weekService) {
-        this.weekService = weekService;
+    @PostMapping
+    public Week createWeek() {
+        return weekService.createWeek();
     }
 
     @GetMapping
-    public List<Week> getAll() {
+    public List<Week> getWeeks() {
         return weekService.getAllWeeks();
     }
-
-    @PostMapping
-    public Week create(@RequestBody Week week) {
-        return weekService.createWeek(week);
-    }
 }
+
