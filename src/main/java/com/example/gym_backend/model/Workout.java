@@ -28,6 +28,7 @@ public class Workout {
     @JoinColumn(name = "week_id")
     @JsonBackReference
     private Week week;
+
     private Integer titleNumber;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

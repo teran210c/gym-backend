@@ -18,7 +18,8 @@ public class Week {
 
     private String title; // "Semana 1" o "Week A", etc
 
-    @OneToMany(mappedBy = "week", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "week", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Workout> workouts;
+
 }

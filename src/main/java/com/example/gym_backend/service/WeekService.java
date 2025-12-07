@@ -14,32 +14,43 @@ public class WeekService {
 
     public WeekService(WeekRepository weekRepository) {
         this.weekRepository = weekRepository;
+
+        // ☑️ Crear semana inicial solo si no existen semanas
+        initializeDefaultWeek();
+    }
+
+    private void initializeDefaultWeek() {
+        if (weekRepository.count() == 0) {
+            Week week = Week.builder()
+                    .title("Week 1")
+                    .build();
+
+            // Workout vacío
+            Workout workout = Workout.builder()
+                    .titleNumber(1)
+                    .week(week)
+                    .build();
+
+            // Exercise vacío
+            Exercise exercise = Exercise.builder()
+                    .name(null)
+                    .reps(null)
+                    .weight(null)
+                    .workout(workout)
+                    .build();
+
+            workout.setExercises(List.of(exercise));
+            week.setWorkouts(List.of(workout));
+
+            weekRepository.save(week);
+        }
     }
 
     public Week createWeek() {
-        // Crear semana
         Week week = Week.builder()
                 .title(generateWeekTitle())
                 .workouts(new ArrayList<>())
                 .build();
-
-        // Crear workout vacío
-        Workout workout = Workout.builder()
-                .week(week)
-                .exercises(new ArrayList<>())
-                .build();
-
-        // Crear ejercicio vacío
-        Exercise emptyExercise = Exercise.builder()
-                .name(null)
-                .muscleGroup(null)
-                .reps(null)
-                .weight(null)
-                .workout(workout)
-                .build();
-
-        workout.getExercises().add(emptyExercise);
-        week.getWorkouts().add(workout);
 
         return weekRepository.save(week);
     }
@@ -52,6 +63,4 @@ public class WeekService {
     public List<Week> getAllWeeks() {
         return weekRepository.findAll();
     }
-
-
 }
